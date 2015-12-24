@@ -87,7 +87,7 @@ var createComment = function(req, res){
 
     var commentValue = req.body.commentValue ? req.body.commentValue : "";
     var commentType = req.body.commentType ? req.body.commentType : Constant.COMMENT_TYPE.TEXT;
-    var isShop = req.body.isShop ? true : false;
+    var isShop = isNaN(req.body.isShop) || !req.body.isShop ? 0 : parseInt(req.body.isShop);
 
     var productComment = new ProductComment();
     productComment.commentType = commentType;
