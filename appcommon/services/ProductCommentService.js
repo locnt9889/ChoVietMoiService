@@ -23,6 +23,9 @@ var uploadFileHelper = require("../helpers/UploadFileHelper");
 var addNewProductComment = function(req, res, responseObj,  productComment){
     productCommentDao.addNew(productComment).then(function(result){
         productComment.commentID = result.insertId;
+        productComment.fullName = req.accessTokenObj.fullName;
+        productComment.avatarImageURL = req.accessTokenObj.avatarImageURL;
+
         responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
         responseObj.results = productComment;
         res.send(responseObj);
