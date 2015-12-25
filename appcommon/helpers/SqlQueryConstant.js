@@ -94,10 +94,10 @@ var USER_FAVORITE_SQL_SCRIPT = {
 
 var COMMENT_SQL_SCRIPT = {
     COUNT_GET_COMMENT_BY_PRODUCT : "SELECT COUNT(commentID) AS totalItems FROM Shop_Product_Comments WHERE productID = ? AND isActive = 1",
-    GET_COMMENT_BY_PRODUCT : "SELECT * FROM Shop_Product_Comments WHERE productID = ? AND isActive = 1 ORDER BY commentID DESC LIMIT ?, ?",
+    GET_COMMENT_BY_PRODUCT : "SELECT spc.*, u.fullName, u.avatarImageURL FROM Shop_Product_Comments spc INNER JOIN User u ON spc.userID = u.userID WHERE spc.productID = ? AND spc.isActive = 1 ORDER BY spc.commentID DESC LIMIT ?, ?",
 
     COUNT_GET_COMMENT_BY_PARENT : "SELECT COUNT(commentID) AS totalItems FROM Shop_Product_Comments WHERE parent_CommentID = ? AND isActive = 1",
-    GET_COMMENT_BY_PARENT : "SELECT * FROM Shop_Product_Comments WHERE parent_CommentID = ? AND isActive = 1 ORDER BY commentID DESC LIMIT ?, ?"
+    GET_COMMENT_BY_PARENT : "SELECT spc.*, u.fullName, u.avatarImageURL FROM Shop_Product_Comments spc INNER JOIN User u ON spc.userID = u.userID WHERE spc.parent_CommentID = ? AND spc.isActive = 1 ORDER BY spc.commentID DESC LIMIT ?, ?"
 }
 
 /*Exports*/
