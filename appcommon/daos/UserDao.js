@@ -11,11 +11,6 @@ var Constant = require("../helpers/Constant");
 var userDao = new MysqlHelper(Constant.TABLE_NAME_DB.USER.NAME);
 var ResponsePagingDto = require("../modelsDto/ResponsePagingDto");
 
-
-userDao.test = function(){
-    console.log("test");
-}
-
 userDao.checkEmailExist = function(email){
     var sql = SqlQueryConstant.USER_SQL_SCRIPT.CHECK_EMAIL_EXIST;
     var params = [email];
