@@ -9,25 +9,25 @@ var Constant = require("../helpers/Constant");
 var shopDistrictDao = new MysqlHelper(Constant.TABLE_NAME_DB.SHOP_DISTRICT.NAME);
 var ResponsePagingDto = require("../modelsDto/ResponsePagingDto");
 
-MysqlHelper.prototype.getShopDistrictByShop = function(shopID){
+shopDistrictDao.getShopDistrictByShop = function(shopID){
     var sql = SqlQueryConstant.SHOP_SQL_SCRIPT.GET_SHOP_DISTRICT_BY_SHOP;
     var params = [shopID];
     return shopDistrictDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.addMultiShopDistrict = function(array){
+shopDistrictDao.addMultiShopDistrict = function(array){
     var sql = SqlQueryConstant.SHOP_SQL_SCRIPT.SLQ_ADD_NEW_MULTI_DISTRICT;
     var params = [array];
     return shopDistrictDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.removeMultiShopDistrictById = function(shopID, districtIdListStr){
+shopDistrictDao.removeMultiShopDistrictById = function(shopID, districtIdListStr){
     var sql = SqlQueryConstant.SHOP_SQL_SCRIPT.SLQ_REMOVE_MULTI_SHOP_DISTRICT + districtIdListStr;
     var params = [shopID];
     return shopDistrictDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.removeAllShopDistrictOfShop = function(shopID){
+shopDistrictDao.removeAllShopDistrictOfShop = function(shopID){
     var sql = SqlQueryConstant.SHOP_SQL_SCRIPT.SLQ_REMOVE_ALL_SHOP_DISTRICT_OF_SHOP;
     var params = [shopID];
     return shopDistrictDao.queryExecute(sql, params);

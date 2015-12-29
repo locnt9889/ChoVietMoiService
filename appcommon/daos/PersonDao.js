@@ -4,7 +4,7 @@
 
 var MysqlHelper = new require("../helpers/MysqlHelper");
 var personDao = new MysqlHelper("person");
-MysqlHelper.prototype.test = function(){
+personDao.test = function(){
     console.log("test");
 }
 /*Export*/

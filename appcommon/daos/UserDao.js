@@ -12,47 +12,47 @@ var userDao = new MysqlHelper(Constant.TABLE_NAME_DB.USER.NAME);
 var ResponsePagingDto = require("../modelsDto/ResponsePagingDto");
 
 
-MysqlHelper.prototype.test = function(){
+userDao.test = function(){
     console.log("test");
 }
 
-MysqlHelper.prototype.checkEmailExist = function(email){
+userDao.checkEmailExist = function(email){
     var sql = SqlQueryConstant.USER_SQL_SCRIPT.CHECK_EMAIL_EXIST;
     var params = [email];
     return userDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.getUserStatusByValue = function(value){
+userDao.getUserStatusByValue = function(value){
     var sql = SqlQueryConstant.USER_SQL_SCRIPT.USER_STATUS_SCRIPT.GET_USER_STATUS_ID_BY_VALUE;
     var params = [value];
     return userDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.checkLogin = function(email, password){
+userDao.checkLogin = function(email, password){
     var sql = SqlQueryConstant.USER_SQL_SCRIPT.CHECK_LOGIN;
     var params = [email, password];
     return userDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.findDeviceTokenByValue = function(deviceToken){
+userDao.findDeviceTokenByValue = function(deviceToken){
     var sql = SqlQueryConstant.USER_SQL_SCRIPT.FIND_DEVICE_TOKEN_BY_VALUE;
     var params = [deviceToken];
     return userDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.changePassword = function(userID, newPasswordMD5){
+userDao.changePassword = function(userID, newPasswordMD5){
     var sql = SqlQueryConstant.USER_SQL_SCRIPT.SLQ_CHANGE_PASSWORD;
     var params = [newPasswordMD5, userID];
     return userDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.getUserProfileById = function(userID){
+userDao.getUserProfileById = function(userID){
     var sql = SqlQueryConstant.USER_SQL_SCRIPT.SQL_GET_USER_PROFILE;
     var params = [userID];
     return userDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.searchUser = function(userID, searchText, pageNum, perPage){
+userDao.searchUser = function(userID, searchText, pageNum, perPage){
     var def = Q.defer();
 
     var start = perPage * (pageNum-1);

@@ -15,13 +15,13 @@ var TYPE_VALUE = {
     ALL : "ALL"
 }
 
-MysqlHelper.prototype.checkFavoriteUserAndItem = function(userID, itemID, type){
+userFavoriteDao.checkFavoriteUserAndItem = function(userID, itemID, type){
     var sql = SqlQueryConstant.USER_FAVORITE_SQL_SCRIPT.CHECK_FAVORITE_USER_AND_ITEM;
     var params = [userID, itemID, type];
     return userFavoriteDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.getListFavorite = function(userID, favoriteType, pageNum, perPage){
+userFavoriteDao.getListFavorite = function(userID, favoriteType, pageNum, perPage){
     var def = Q.defer();
 
     var start = perPage * (pageNum-1);

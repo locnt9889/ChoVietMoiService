@@ -34,5 +34,5 @@ var checkAccessToken = function(accessToken){
 }
 
 /*Export*/
-MysqlHelper.prototype.checkAccessToken = checkAccessToken;
+PersonAccessDao.checkAccessToken = checkAccessToken;
 module.exports = PersonAccessDao;

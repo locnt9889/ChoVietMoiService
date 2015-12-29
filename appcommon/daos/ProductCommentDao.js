@@ -9,7 +9,7 @@ var Constant = require("../helpers/Constant");
 var productCommentDao = new MysqlHelper(Constant.TABLE_NAME_DB.SHOP_PRODUCT_COMMENTS.NAME);
 var ResponsePagingDto = require("../modelsDto/ResponsePagingDto");
 
-MysqlHelper.prototype.getCommentByProductID = function(productID, pageNum, perPage){
+productCommentDao.getCommentByProductID = function(productID, pageNum, perPage){
     var def = Q.defer();
 
     var start = perPage * (pageNum-1);
@@ -45,7 +45,7 @@ MysqlHelper.prototype.getCommentByProductID = function(productID, pageNum, perPa
     return def.promise;
 };
 
-MysqlHelper.prototype.getCommentByParent = function(parentID, pageNum, perPage){
+productCommentDao.getCommentByParent = function(parentID, pageNum, perPage){
     var def = Q.defer();
 
     var start = perPage * (pageNum-1);

@@ -9,13 +9,13 @@ var Constant = require("../helpers/Constant");
 var productDao = new MysqlHelper(Constant.TABLE_NAME_DB.SHOP_PRODUCT.NAME);
 var ResponsePagingDto = require("../modelsDto/ResponsePagingDto");
 
-MysqlHelper.prototype.checkProductNameOfCategoryExist = function(categoryID, name){
+productDao.checkProductNameOfCategoryExist = function(categoryID, name){
     var sql = SqlQueryConstant.PRODUCT_SQL_SCRIPT.CHECK_PRODUCT_NAME_OF_CATEGORY_EXIST;
     var params = [categoryID, name];
     return productDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.getProductByCategory = function(categoryID, pageNum, perPage){
+productDao.getProductByCategory = function(categoryID, pageNum, perPage){
     var def = Q.defer();
 
     var start = perPage * (pageNum-1);
@@ -52,7 +52,7 @@ MysqlHelper.prototype.getProductByCategory = function(categoryID, pageNum, perPa
 
 };
 
-MysqlHelper.prototype.checkIsShopCommentProduct = function(userID, productID){
+productDao.checkIsShopCommentProduct = function(userID, productID){
     var sql = SqlQueryConstant.PRODUCT_SQL_SCRIPT.CHECK_PERMISSION_USER_AND_PRODUCT;
     var params = [userID, productID];
     return productDao.queryExecute(sql, params);

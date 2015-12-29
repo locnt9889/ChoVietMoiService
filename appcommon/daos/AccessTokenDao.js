@@ -38,6 +38,6 @@ var removeAllOtherAccessTokenByUserId = function(accessToken, userId){
 }
 
 /*Export*/
-MysqlHelper.prototype.checkAccessToken = checkAccessToken;
-MysqlHelper.prototype.removeAllOtherAccessTokenByUserId = removeAllOtherAccessTokenByUserId;
+AccessTokenDao.checkAccessToken = checkAccessToken;
+AccessTokenDao.removeAllOtherAccessTokenByUserId = removeAllOtherAccessTokenByUserId;
 module.exports = AccessTokenDao;

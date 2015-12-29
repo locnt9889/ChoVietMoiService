@@ -9,19 +9,19 @@ var Constant = require("../helpers/Constant");
 var shopDao = new MysqlHelper(Constant.TABLE_NAME_DB.SHOP.NAME);
 var ResponsePagingDto = require("../modelsDto/ResponsePagingDto");
 
-MysqlHelper.prototype.checkShopNameOfUserExist = function(userID, name){
+shopDao.checkShopNameOfUserExist = function(userID, name){
     var sql = SqlQueryConstant.SHOP_SQL_SCRIPT.CHECK_SHOP_NAME_OF_USER_EXIST;
     var params = [userID, name];
     return shopDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.getShopStatusByValue = function(value){
+shopDao.getShopStatusByValue = function(value){
     var sql = SqlQueryConstant.SHOP_SQL_SCRIPT.SHOP_STATUS_SCRIPT.GET_SHOP_STATUS_ID_BY_VALUE;
     var params = [value];
     return shopDao.queryExecute(sql, params);
 };
 
-MysqlHelper.prototype.getShopByUser = function(userID){
+shopDao.getShopByUser = function(userID){
     var sql = SqlQueryConstant.SHOP_SQL_SCRIPT.GET_SHOP_BY_USER;
     var params = [userID];
     return shopDao.queryExecute(sql, params);
@@ -38,7 +38,7 @@ MysqlHelper.prototype.getShopByUser = function(userID){
  * round(acos(sin($lat1*pi()/180)*sin($lat2*pi()/180) + cos($lat1*pi()/180)*cos($lat2*PI()/180)*cos($long2*PI()/180-$long1*pi()/180)) * 6371000, 2)
  */
 
-MysqlHelper.prototype.getShopNearWithDistance = function(latUser, longUser, distanceMax, shopTypeChild, shopTypeParent){
+shopDao.getShopNearWithDistance = function(latUser, longUser, distanceMax, shopTypeChild, shopTypeParent){
     var sql_getShopByTypeChild = "SELECT DISTINCT shopID FROM Shop_Type WHERE shopTypeChildID = " + shopTypeChild;
     var sql_getShopByTypeParent = "SELECT DISTINCT shopID FROM Shop_Type WHERE shopTypeChildID IN (SELECT DISTINCT shopTypeChildID FROM Data_List_Shop_Type_Child WHERE shopTypeParentID = "+ shopTypeParent +")";
 

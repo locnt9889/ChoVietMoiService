@@ -9,7 +9,7 @@ var Constant = require("../helpers/Constant");
 var productImageDao = new MysqlHelper(Constant.TABLE_NAME_DB.SHOP_PRODUCT_IMAGE.NAME);
 var ResponsePagingDto = require("../modelsDto/ResponsePagingDto");
 
-MysqlHelper.prototype.getImageByProduct = function(productID, pageNum, perPage){
+productImageDao.getImageByProduct = function(productID, pageNum, perPage){
     var def = Q.defer();
 
     var start = perPage * (pageNum-1);
@@ -45,7 +45,7 @@ MysqlHelper.prototype.getImageByProduct = function(productID, pageNum, perPage){
     return def.promise;
 };
 
-MysqlHelper.prototype.getAllImageByProduct = function(productID){
+productImageDao.getAllImageByProduct = function(productID){
     var sql = SqlQueryConstant.PRODUCT_SQL_SCRIPT.GET_ALL_IMAGE_BY_PRODUCT;
     var params = [productID];
     return productImageDao.queryExecute(sql, params);
