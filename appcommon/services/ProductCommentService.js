@@ -89,8 +89,17 @@ var createComment = function(req, res){
     var commentParentID = isNaN(req.body.commentParentID) || !req.body.commentParentID ? 0 : parseInt(req.body.commentParentID);
 
     var commentValue = req.body.commentValue ? req.body.commentValue : "";
-    var commentType = req.body.commentType ? req.body.commentType : Constant.COMMENT_TYPE.TEXT;
+    var commentType = req.body.commentType;
     var isShop = isNaN(req.body.isShop) || !req.body.isShop ? 0 : parseInt(req.body.isShop);
+
+    if(commentType == undefined){
+        productID = isNaN(req.query.productID) || !req.query.productID ? 0 : parseInt(req.query.productID);
+        commentParentID = isNaN(req.query.commentParentID) || !req.query.commentParentID ? 0 : parseInt(req.query.commentParentID);
+
+        commentValue = req.query.commentValue ? req.query.commentValue : "";
+        commentType = req.query.commentType ? req.query.commentType : Constant.COMMENT_TYPE.TEXT;
+        isShop = isNaN(req.query.isShop) || !req.query.isShop ? 0 : parseInt(req.query.isShop);
+    }
 
     var productComment = new ProductComment();
     productComment.commentType = commentType;
