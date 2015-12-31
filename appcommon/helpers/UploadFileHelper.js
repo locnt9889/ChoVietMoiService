@@ -20,15 +20,45 @@ function writeFileUpload(fileName, newPreFile,filePath, preFolder){
         }else {
             var currentDate = new Date();
             var filepathSave = newPreFile + "_" + currentDate.getTime() + ext;
-            var fullFilePath = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + preFolder + filepathSave;
-            console.log("fullFilePath : " + fullFilePath);
-            fs.writeFile(fullFilePath, data, function (err) {
-                if (err) {
-                    deferred.reject(err);
+            var fullFilePath = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + preFolder;
+
+            fs.exists(fullFilePath, function(result){
+                if(!result){
+                    mkdirp(path.resolve(fullFilePath), function (err) {
+                        if (err) {
+                            console.error("Create folder " + fullFilePath + " error : " + err);
+                        }else{
+                            console.log("Create folder " + fullFilePath + " success");
+                            console.log("fullFilePath : " + fullFilePath);
+                            fs.writeFile(fullFilePath + filepathSave, data, function (err) {
+                                if (err) {
+                                    deferred.reject(err);
+                                }else{
+                                    deferred.resolve(filepathSave);
+                                }
+                            });
+                        }
+                    });
                 }else{
-                    deferred.resolve(filepathSave);
+                    console.log("fullFilePath : " + fullFilePath);
+                    fs.writeFile(fullFilePath + filepathSave, data, function (err) {
+                        if (err) {
+                            deferred.reject(err);
+                        }else{
+                            deferred.resolve(filepathSave);
+                        }
+                    });
                 }
             });
+
+            console.log("fullFilePath : " + fullFilePath);
+            //fs.writeFile(fullFilePath + filepathSave, data, function (err) {
+            //    if (err) {
+            //        deferred.reject(err);
+            //    }else{
+            //        deferred.resolve(filepathSave);
+            //    }
+            //});
         }
     });
     return deferred.promise;
