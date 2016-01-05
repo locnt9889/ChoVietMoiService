@@ -535,6 +535,68 @@ var deleteProductImage = function(req, res) {
 
 };
 
+
+var search = function(req, res){
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+    var userID = accessTokenObj.userID;
+
+    var provinceID = isNaN(req.body.provinceID) ? 0 : parseInt(req.body.provinceID);
+    var districtID = isNaN(req.body.districtID) ? 0 : parseInt(req.body.districtID);
+    var shopTypeParent = isNaN(req.body.shopTypeParent) ? 0 : parseInt(req.body.shopTypeParent);
+    var shopTypeChild = isNaN(req.body.shopTypeChild) ? 0 : parseInt(req.body.shopTypeChild);
+
+    var searchName = req.body.searchName ? req.body.searchName : "";
+    var sortType = req.body.sortType ? req.body.sortType : "";
+    var pageNum = isNaN(req.body.pageNum)? 1 : parseInt(req.body.pageNum);
+    var perPage = isNaN(req.body.perPage)? 10 : parseInt(req.body.perPage);
+
+
+    //build sql
+    var sql_getShopByDistrict = "SELECT DISTINCT shopID FROM Shop_District WHERE districtID = " + districtID;
+    var sql_getShopByProvince = "SELECT DISTINCT shopID FROM Shop_District WHERE districtID IN (SELECT DISTINCT district_id FROM Data_District WHERE province_id = "+ provinceID +")";
+
+    var sql_getShopByTypeChild = "SELECT DISTINCT shopID FROM Shop_Type WHERE shopTypeChildID = " + shopTypeChild;
+    var sql_getShopByTypeParent = "SELECT DISTINCT shopID FROM Shop_Type WHERE shopTypeChildID IN (SELECT DISTINCT shopTypeChildID FROM Data_List_Shop_Type_Child WHERE shopTypeParentID = "+ shopTypeParent +")";
+
+    var sql_search = "SELECT * FROM Shop WHERE isActive = 1";
+
+    if(searchName.trim().length > 0){
+        var searchNameArray = searchName.split(" ");
+        for(var i = 0; i < searchNameArray.length; i++){
+            sql_search = sql_search + " AND shopName LIKE '%" + searchNameArray[i] + "%'"
+        }
+    }
+
+    if(districtID > 0){
+        sql_search = sql_search + " AND shopID IN ("+ sql_getShopByDistrict +")";
+    }else{
+        if(provinceID > 0){
+            sql_search = sql_search + " AND shopID IN ( "+ sql_getShopByProvince +" )";
+        }
+    }
+
+    if(shopTypeChild > 0){
+        sql_search = sql_search + " AND shopID IN ("+ sql_getShopByTypeChild +")";
+    }else{
+        if(shopTypeParent > 0){
+            sql_search = sql_search + " AND shopID IN ( "+ sql_getShopByTypeParent +" )";
+        }
+    }
+
+    shopDao.queryExecute(sql_search,[]).then(function(data){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+        responseObj.results = data;
+        res.send(responseObj);
+    }, function(err){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+        responseObj.errorsObject = err;
+        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+        res.send(responseObj);
+    });
+};
+
 /*Exports*/
 module.exports = {
     checkPermissionUserAndCategory : checkPermissionUserAndCategory,

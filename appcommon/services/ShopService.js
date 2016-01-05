@@ -325,14 +325,14 @@ var updateDistrictOfShop = function(req, res){
     var districtIdListStr = "(" + districtIdlList.join() + ")";
 
     //remove
-    shopTypeDao.removeAllShopDistrictOfShop(shopID).then(function (result) {
+    shopDistrictDao.removeAllShopDistrictOfShop(shopID).then(function (result) {
         console.log("remove district of shop success");
         //if(action == 'REMOVE'){
         //    responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
         //    responseObj.results = result;
         //    res.send(responseObj);
         //}else if(action == 'INSERT'){    //insert
-            shopTypeDao.addMultiShopDistrict(districtModelList).then(function (data) {
+        shopDistrictDao.addMultiShopDistrict(districtModelList).then(function (data) {
                 console.log("add district shop success");
                 responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
                 responseObj.results = data;

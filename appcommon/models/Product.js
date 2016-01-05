@@ -16,6 +16,7 @@ function Product(){
     this.dateEndSale = new Date();
     this.productProperties = "";
     this.isActive = 1;
+    //this.readCount = 0;
     this.createdDate = new Date();
     this.modifiedDate = new Date();
 };
