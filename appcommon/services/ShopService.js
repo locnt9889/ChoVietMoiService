@@ -640,7 +640,7 @@ var search = function(req, res){
     if(searchName.trim().length > 0){
         var searchNameArray = searchName.split(" ");
         for(var i = 0; i < searchNameArray.length; i++){
-            sql_search = sql_search + " AND shopName LIKE '%" + searchNameArray[i] + "'"
+            sql_search = sql_search + " AND shopName LIKE '%" + searchNameArray[i] + "%'"
         }
     }
 
