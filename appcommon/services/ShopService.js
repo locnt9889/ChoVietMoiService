@@ -626,6 +626,8 @@ var search = function(req, res){
     var shopTypeParent = isNaN(req.body.shopTypeParent) ? 0 : parseInt(req.body.shopTypeParent);
     var shopTypeChild = isNaN(req.body.shopTypeChild) ? 0 : parseInt(req.body.shopTypeChild);
 
+    var searchName = req.body.searchName ? req.body.searchName : "";
+
     //build sql
     var sql_getShopByDistrict = "SELECT DISTINCT shopID FROM Shop_District WHERE districtID = " + districtID;
     var sql_getShopByProvince = "SELECT DISTINCT shopID FROM Shop_District WHERE districtID IN (SELECT DISTINCT district_id FROM Data_District WHERE province_id = "+ provinceID +")";
@@ -634,6 +636,14 @@ var search = function(req, res){
     var sql_getShopByTypeParent = "SELECT DISTINCT shopID FROM Shop_Type WHERE shopTypeChildID IN (SELECT DISTINCT shopTypeChildID FROM Data_List_Shop_Type_Child WHERE shopTypeParentID = "+ shopTypeParent +")";
 
     var sql_search = "SELECT * FROM Shop WHERE isActive = 1";
+
+    if(searchName.trim().length > 0){
+        var searchNameArray = searchName.split(" ");
+        for(var i = 0; i < searchNameArray.length; i++){
+            sql_search = sql_search + " AND shopName LIKE '%" + searchNameArray[i] + "'"
+        }
+    }
+
     if(districtID > 0){
         sql_search = sql_search + " AND shopID IN ("+ sql_getShopByDistrict +")";
     }else{
