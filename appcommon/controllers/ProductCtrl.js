@@ -53,4 +53,9 @@ router.post('/search', [accessTokenService.checkAccessToken, function(req, res, 
     productService.search(req, res);
 }]);
 
+/* POST search */
+router.post('/getProductOfShop', [accessTokenService.checkAccessToken, function(req, res, next) {
+    productService.getProductOfShop(req, res);
+}]);
+
 module.exports = router;

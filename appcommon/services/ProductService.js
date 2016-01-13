@@ -615,6 +615,45 @@ var search = function(req, res){
     });
 };
 
+var getProductOfShop = function(req, res){
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+    var userID = accessTokenObj.userID;
+
+    var sortType = req.body.sortType ? req.body.sortType : "";
+    var pageNum = isNaN(req.body.pageNum)? 1 : parseInt(req.body.pageNum);
+    var shopID = isNaN(req.body.shopID)? 1 : parseInt(req.body.shopID);
+    var perPage = isNaN(req.body.perPage)? 10 : parseInt(req.body.perPage);
+
+
+    //build sql
+    var selectStr = "SELECT sp.* , sc.categoryID, sc.categoryName, s.shopID, s.shopName ";
+    var countStr = "SELECT COUNT(*) as totalItems ";
+    var sql_search = " FROM Shop_Product sp INNER JOIN Shop_Categories sc ON sp.categoryID = sc.categoryID " +
+        "INNER JOIN Shop s ON sc.shopID = s.shopID " +
+        "WHERE sc.isActive = 1 AND sp.isActive = 1 AND s.isActive = 1 AND s.shopID = " + shopID;
+
+    if(sortType == "SORT_PRICE"){
+        sql_search = sql_search + " ORDER BY sp.price DESC";
+    }else if (sortType == "SORT_MOST_READ"){
+        sql_search = sql_search + " ORDER BY sp.readCount DESC";
+    }else{//SORT_NEW
+        sql_search = sql_search + " ORDER BY sp.createdDate DESC";
+    }
+
+    productDao.getProductOfShop(sql_search, selectStr, countStr, pageNum, perPage).then(function(data){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+        responseObj.results = data;
+        res.send(responseObj);
+    }, function(err){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+        responseObj.errorsObject = err;
+        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+        res.send(responseObj);
+    });
+};
+
 /*Exports*/
 module.exports = {
     checkPermissionUserAndCategory : checkPermissionUserAndCategory,
@@ -626,5 +665,6 @@ module.exports = {
     createProductImage : createProductImage,
     getImageByProduct : getImageByProduct,
     deleteProductImage : deleteProductImage,
-    search : search
+    search : search,
+    getProductOfShop : getProductOfShop
 }
