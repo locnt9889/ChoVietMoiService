@@ -626,6 +626,9 @@ var search = function(req, res){
     var shopTypeParent = isNaN(req.body.shopTypeParent) ? 0 : parseInt(req.body.shopTypeParent);
     var shopTypeChild = isNaN(req.body.shopTypeChild) ? 0 : parseInt(req.body.shopTypeChild);
 
+    var pageNum = isNaN(req.body.pageNum)? 1 : parseInt(req.body.pageNum);
+    var perPage = isNaN(req.body.perPage)? 10 : parseInt(req.body.perPage);
+
     var searchName = req.body.searchName ? req.body.searchName : "";
 
     //build sql
@@ -635,7 +638,9 @@ var search = function(req, res){
     var sql_getShopByTypeChild = "SELECT DISTINCT shopID FROM Shop_Type WHERE shopTypeChildID = " + shopTypeChild;
     var sql_getShopByTypeParent = "SELECT DISTINCT shopID FROM Shop_Type WHERE shopTypeChildID IN (SELECT DISTINCT shopTypeChildID FROM Data_List_Shop_Type_Child WHERE shopTypeParentID = "+ shopTypeParent +")";
 
-    var sql_search = "SELECT * FROM Shop WHERE isActive = 1";
+    var select_search_count = "SELECT COUNT(*) as totalItems ";
+    var select_search = "SELECT * ";
+    var sql_search = "FROM Shop WHERE isActive = 1";
 
     if(searchName.trim().length > 0){
         var searchNameArray = searchName.split(" ");
@@ -660,7 +665,7 @@ var search = function(req, res){
         }
     }
 
-    shopDao.queryExecute(sql_search,[]).then(function(data){
+    shopDao.search(select_search_count, select_search, sql_search, pageNum, perPage).then(function(data){
         responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
         responseObj.results = data;
         res.send(responseObj);

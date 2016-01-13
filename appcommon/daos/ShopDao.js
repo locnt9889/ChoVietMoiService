@@ -63,5 +63,42 @@ shopDao.getShopNearWithDistance = function(latUser, longUser, distanceMax, shopT
     return shopDao.queryExecute(sql, params);
 };
 
+shopDao.search = function(select_search_count, select_search, sql_search, pageNum, perPage){
+    var def = Q.defer();
+
+    var start = perPage * (pageNum-1);
+
+    var sqlCount = select_search_count + sql_search;
+    var paramCount = [];
+    shopDao.queryExecute(sqlCount, paramCount).then(function(data){
+        var responsePagingDto = new ResponsePagingDto();
+        var totalItems = data[0].totalItems;
+        var totalPages = parseInt(totalItems / perPage);
+        if((totalItems / perPage) > totalPages){
+            totalPages = totalPages + 1;
+        }
+
+        responsePagingDto.pageNum = pageNum;
+        responsePagingDto.perPage = perPage;
+        responsePagingDto.totalItems = totalItems;
+        responsePagingDto.totalPages = totalPages;
+
+        var sql = select_search + sql_search + " LIMIT ?,?";
+        var params = [start, perPage];
+        shopDao.queryExecute(sql, params).then(function(data1){
+            responsePagingDto.items = data1;
+
+            def.resolve(responsePagingDto);
+        }, function(err){
+            def.reject(err);
+        });
+    }, function(err){
+        def.reject(err);
+    });
+
+    return def.promise;
+
+};
+
 /*Export*/
 module.exports = shopDao;
