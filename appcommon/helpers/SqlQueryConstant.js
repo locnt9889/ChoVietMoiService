@@ -83,6 +83,7 @@ var PRODUCT_SQL_SCRIPT = {
     GET_IMAGE_BY_PRODUCT : "SELECT * FROM Shop_Product_Images WHERE productID = ? AND isActive= 1 LIMIT ?, ?",
     COUNT_GET_IMAGE_BY_PRODUCT : "SELECT COUNT(id) as totalItems FROM Shop_Product_Images WHERE productID = ? AND isActive= 1",
     GET_ALL_IMAGE_BY_PRODUCT : "SELECT * FROM Shop_Product_Images WHERE productID = ? AND isActive= 1",
+    INCREASE_READ_COUNT : "UPDATE Shop_Product SET readCount = readCount + 1 WHERE productID = ?",
     CHECK_PERMISSION_USER_AND_PRODUCT : "SELECT * FROM Shop_Categories sc INNER JOIN Shop sh ON sc.shopID = sh.shopID INNER JOIN Shop_Product sp ON sp.categoryID = sc.categoryID WHERE sh.userID = ? and sp.productID = ?"
 }
 

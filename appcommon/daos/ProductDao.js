@@ -15,6 +15,12 @@ productDao.checkProductNameOfCategoryExist = function(categoryID, name){
     return productDao.queryExecute(sql, params);
 };
 
+productDao.increaseReadCount = function(productID){
+    var sql = SqlQueryConstant.PRODUCT_SQL_SCRIPT.INCREASE_READ_COUNT;
+    var params = [productID];
+    return productDao.queryExecute(sql, params);
+};
+
 productDao.getProductByCategory = function(categoryID, pageNum, perPage){
     var def = Q.defer();
 

@@ -214,6 +214,12 @@ var getProductDetail = function(req, res) {
                 responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
                 res.send(responseObj);
             });
+
+            productDao.increaseReadCount(productID).then(function(data){
+                console.log(" increaseReadCount : success");
+            }, function(err){
+                console.log(" increaseReadCount : error");
+            });
         }else{
             res.send(responseObj);
         }
