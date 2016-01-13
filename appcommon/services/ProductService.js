@@ -561,7 +561,7 @@ var search = function(req, res){
     var sql_getShopByTypeParent = "SELECT DISTINCT shopID FROM Shop_Type WHERE shopTypeChildID IN (SELECT DISTINCT shopTypeChildID FROM Data_List_Shop_Type_Child WHERE shopTypeParentID = "+ shopTypeParent +")";
 
     var selectStr = "SELECT sp.* , sc.categoryID, sc.categoryName, s.shopID, s.shopName ";
-    var countStr = "SELECT COUNT(sp.*) ";
+    var countStr = "SELECT COUNT(*) as totalItems ";
     var sql_search = " FROM Shop_Product sp INNER JOIN Shop_Categories sc ON sp.categoryID = sc.categoryID " +
                     "INNER JOIN Shop s ON sc.shopID = s.shopID " +
                     "WHERE sc.isActive = 1 AND sp.isActive = 1 AND s.isActive = 1";

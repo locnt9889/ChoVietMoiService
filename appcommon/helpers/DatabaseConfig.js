@@ -15,13 +15,13 @@ var DB_CONFIG = {
 };
 
 
-//server 104.236.31.239
+//server 6recipese
 //var DB_CONFIG = {
 //    connectionLimit : 100, //important
-//    host     : '104.236.31.239',
-//    user     : 'devchomoi',
-//    password : 'Devchomoi2015',
-//    database : 'chomoidb',
+//    host     : '6recipes.com',
+//    user     : '6recipe',
+//    password : 'gg84YU88nmx',
+//    database : '6recipe',
 //    debug    :  false
 //}
 
