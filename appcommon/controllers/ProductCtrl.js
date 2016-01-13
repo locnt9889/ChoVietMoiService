@@ -43,9 +43,14 @@ router.post('/getImageByProduct', [accessTokenService.checkAccessToken, function
     productService.getImageByProduct(req, res);
 }]);
 
-/* POST get Image By Product */
+/* POST get delete Product */
 router.post('/deleteProductImage', [accessTokenService.checkAccessToken, function(req, res, next) {
     productService.deleteProductImage(req, res);
+}]);
+
+/* POST search */
+router.post('/search', [accessTokenService.checkAccessToken, function(req, res, next) {
+    productService.search(req, res);
 }]);
 
 module.exports = router;

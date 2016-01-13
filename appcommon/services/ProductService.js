@@ -560,32 +560,44 @@ var search = function(req, res){
     var sql_getShopByTypeChild = "SELECT DISTINCT shopID FROM Shop_Type WHERE shopTypeChildID = " + shopTypeChild;
     var sql_getShopByTypeParent = "SELECT DISTINCT shopID FROM Shop_Type WHERE shopTypeChildID IN (SELECT DISTINCT shopTypeChildID FROM Data_List_Shop_Type_Child WHERE shopTypeParentID = "+ shopTypeParent +")";
 
-    var sql_search = "SELECT * FROM Shop WHERE isActive = 1";
+    var selectStr = "SELECT sp.* , sc.categoryID, sc.categoryName, s.shopID, s.shopName ";
+    var countStr = "SELECT COUNT(sp.*) ";
+    var sql_search = " FROM Shop_Product sp INNER JOIN Shop_Categories sc ON sp.categoryID = sc.categoryID " +
+                    "INNER JOIN Shop s ON sc.shopID = s.shopID " +
+                    "WHERE sc.isActive = 1 AND sp.isActive = 1 AND s.isActive = 1";
 
     if(searchName.trim().length > 0){
         var searchNameArray = searchName.split(" ");
         for(var i = 0; i < searchNameArray.length; i++){
-            sql_search = sql_search + " AND shopName LIKE '%" + searchNameArray[i] + "%'"
+            sql_search = sql_search + " AND sp.productName LIKE '%" + searchNameArray[i] + "%'"
         }
     }
 
     if(districtID > 0){
-        sql_search = sql_search + " AND shopID IN ("+ sql_getShopByDistrict +")";
+        sql_search = sql_search + " AND s.shopID IN ("+ sql_getShopByDistrict +")";
     }else{
         if(provinceID > 0){
-            sql_search = sql_search + " AND shopID IN ( "+ sql_getShopByProvince +" )";
+            sql_search = sql_search + " AND s.shopID IN ( "+ sql_getShopByProvince +" )";
         }
     }
 
     if(shopTypeChild > 0){
-        sql_search = sql_search + " AND shopID IN ("+ sql_getShopByTypeChild +")";
+        sql_search = sql_search + " AND s.shopID IN ("+ sql_getShopByTypeChild +")";
     }else{
         if(shopTypeParent > 0){
-            sql_search = sql_search + " AND shopID IN ( "+ sql_getShopByTypeParent +" )";
+            sql_search = sql_search + " AND s.shopID IN ( "+ sql_getShopByTypeParent +" )";
         }
     }
 
-    shopDao.queryExecute(sql_search,[]).then(function(data){
+    if(sortType == "SORT_PRICE"){
+        sql_search = sql_search + " ORDER BY sp.price DESC";
+    }else if (sortType == "SORT_MOST_READ"){
+        sql_search = sql_search + " ORDER BY sp.readCount DESC";
+    }else{//SORT_NEW
+        sql_search = sql_search + " ORDER BY sp.createdDate DESC";
+    }
+
+    productDao.search(sql_search, selectStr, countStr, pageNum, perPage).then(function(data){
         responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
         responseObj.results = data;
         res.send(responseObj);
@@ -607,5 +619,6 @@ module.exports = {
     updateProduct : updateProduct,
     createProductImage : createProductImage,
     getImageByProduct : getImageByProduct,
-    deleteProductImage : deleteProductImage
+    deleteProductImage : deleteProductImage,
+    search : search
 }
