@@ -106,6 +106,7 @@ var createProduct = function(req, res){
     var salePrice = req.body.salePrice ? req.body.salePrice : 0.0;
     var dateStartSale = req.body.dateStartSale ? req.body.dateStartSale : "0000-00-00 00:00:00";
     var dateEndSale = req.body.dateEndSale ? req.body.dateEndSale : "0000-00-00 00:00:00";
+    var productProperties = req.body.productProperties ? req.body.productProperties : "";
 
     var categoryID = isNaN(req.body.categoryID)? 0 : parseInt(req.body.categoryID);
 
@@ -140,6 +141,7 @@ var createProduct = function(req, res){
                     product.productCode = productCode;
                     product.productName = productName;
                     product.salePrice = salePrice;
+                    product.productProperties = productProperties;
 
                     productDao.addNew(product).then(function(result){
                         responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
