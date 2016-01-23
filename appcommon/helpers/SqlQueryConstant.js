@@ -90,7 +90,7 @@ var PRODUCT_SQL_SCRIPT = {
 var USER_FAVORITE_SQL_SCRIPT = {
     CHECK_FAVORITE_USER_AND_ITEM : "SELECT * FROM User_Favorite_Items WHERE userID = ? AND favoriteItemID = ? AND favoriteType = ?",
     GET_LIST_FAVORITE_COUNT : "SELECT COUNT(id) as totalItems FROM User_Favorite_Items WHERE userID = ?",
-    GET_LIST_FAVORITE : "SELECT * FROM User_Favorite_Items WHERE userID = ? #ext LIMIT ?, ?"
+    GET_LIST_FAVORITE : "SELECT * FROM User_Favorite_Items WHERE userID = ? #ext ORDER BY createdDate DESC LIMIT ?, ?"
 }
 
 var COMMENT_SQL_SCRIPT = {
