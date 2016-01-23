@@ -260,13 +260,13 @@ var loginByFb = function(req, res){
             }
 
             //response varified == false
-            if(!jsonObj.verified){
-                responseObj.statusErrorCode = Constant.CODE_STATUS.USER_LOGIN.USER_LOGIN_FB_ERROR_ACCESS_TOKEN_INVALID;
-                responseObj.errorsObject = message.USER_LOGIN.USER_LOGIN_FB_ERROR_ACCESS_TOKEN_INVALID;
-                responseObj.errorsMessage = message.USER_LOGIN.USER_LOGIN_FB_ERROR_ACCESS_TOKEN_INVALID.message;
-                res.send(responseObj);
-                return;
-            }
+            //if(!jsonObj.verified){
+            //    responseObj.statusErrorCode = Constant.CODE_STATUS.USER_LOGIN.USER_LOGIN_FB_ERROR_ACCESS_TOKEN_INVALID;
+            //    responseObj.errorsObject = message.USER_LOGIN.USER_LOGIN_FB_ERROR_ACCESS_TOKEN_INVALID;
+            //    responseObj.errorsMessage = message.USER_LOGIN.USER_LOGIN_FB_ERROR_ACCESS_TOKEN_INVALID.message;
+            //    res.send(responseObj);
+            //    return;
+            //}
 
             var accessToken = serviceUtil.generateAccessToken();
             console.log("accesstoken : " +  accessToken);
