@@ -619,7 +619,7 @@ var search = function(req, res){
     var countStr = "SELECT COUNT(*) as totalItems ";
     var sql_search = " FROM Shop_Product sp INNER JOIN Shop_Categories sc ON sp.categoryID = sc.categoryID " +
                     "INNER JOIN Shop s ON sc.shopID = s.shopID " +
-                    "WHERE sc.isActive = 1 AND sp.isActive = 1 AND s.isActive = 1 AND s.isClosesShop = 0 AND sp.isShow = 1";
+                    "WHERE sc.isActive = 1 AND sp.isActive = 1 AND s.isActive = 1 AND s.isCloseShop = 0 AND sp.isShow = 1";
 
     if(searchName.trim().length > 0){
         var searchNameArray = searchName.split(" ");
