@@ -638,11 +638,11 @@ var search = function(req, res){
 
     if(shopTypeChild > 0){
         //sql_search = sql_search + " AND s.shopID IN ("+ sql_getShopByTypeChild +")";
-        sql_search = sql_search + " AND sp.sellCategoryChildID = shopTypeChild";
+        sql_search = sql_search + " AND sp.sellCategoryChildID = " + shopTypeChild;
     }else{
         if(shopTypeParent > 0){
             //sql_search = sql_search + " AND s.shopID IN ( "+ sql_getShopByTypeParent +" )";
-            sql_search = sql_search + " AND sp.sellCategoryParentID = shopTypeParent";
+            sql_search = sql_search + " AND sp.sellCategoryParentID = " + shopTypeParent;
         }
     }
 
