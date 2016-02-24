@@ -59,12 +59,14 @@ var checkPermissionUserAndCategory = function(req, res, next) {
         }else {
             var categoryID = resultProduct[0].categoryID;
             var productName = resultProduct[0].productName;
+            var productCode = resultProduct[0].productCode;
 
             //check permission update category
             categoryDao.checkPermissionUserAndCategory(userID, categoryID).then(function(data){
                 if(data.length > 0){
                     res.categoryID = categoryID;
                     res.productName = productName;
+                    res.productCode = productCode;
 
                     next();
                 }else{
@@ -108,6 +110,9 @@ var createProduct = function(req, res){
     var dateEndSale = req.body.dateEndSale ? req.body.dateEndSale : "0000-00-00 00:00:00";
     var productProperties = req.body.productProperties ? req.body.productProperties : "";
 
+    var sellCategoryParentID = req.body.sellCategoryParentID ? req.body.sellCategoryParentID : 0;
+    var sellCategoryChildID = req.body.sellCategoryChildID ? req.body.sellCategoryChildID : 0;
+
     var categoryID = isNaN(req.body.categoryID)? 0 : parseInt(req.body.categoryID);
 
     if(checkValidateUtil.isEmptyFeild(productName)){
@@ -125,60 +130,94 @@ var createProduct = function(req, res){
         res.send(responseObj);
         return;
     }
-    productDao.checkProductNameOfCategoryExist(categoryID, productName).then(function(data){
-        if(data.length == 0){
-            categoryDao.checkPermissionUserAndCategory(userID, categoryID).then(function(data){
-                if(data.length > 0){
-                    var product = new Product();
 
-                    product.categoryID = categoryID;
-                    product.count = count;
-                    product.dateEndSale = dateEndSale;
-                    product.dateStartSale = dateStartSale;
-                    product.isSale = isSale;
-                    product.isShow = isShow;
-                    product.price = price;
-                    product.productCode = productCode;
-                    product.productName = productName;
-                    product.salePrice = salePrice;
-                    product.productProperties = productProperties;
+    var product = new Product();
 
-                    productDao.addNew(product).then(function(result){
-                        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
-                        responseObj.results = result;
+    product.categoryID = categoryID;
+    product.count = count;
+    product.dateEndSale = dateEndSale;
+    product.dateStartSale = dateStartSale;
+    product.isSale = isSale;
+    product.isShow = isShow;
+    product.price = price;
+    product.productCode = productCode;
+    product.productName = productName;
+    product.salePrice = salePrice;
+    product.productProperties = productProperties;
+    product.sellCategoryChildID = sellCategoryChildID;
+    product.sellCategoryParentID = sellCategoryParentID;
+
+    if(productCode && productCode.trim() != "" && productCode.length > 0){
+        productDao.checkProductCodeExist(productCode).then(function(data){
+            if(data.length == 0){
+                categoryDao.checkPermissionUserAndCategory(userID, categoryID).then(function(data){
+                    if(data.length > 0){
+                        productDao.addNew(product).then(function(result){
+                            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                            responseObj.results = result;
+                            res.send(responseObj);
+                            var folderImagesPath = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + result.insertId;
+                            fileService.createFolderIfNotExits(folderImagesPath);
+                        },function(err){
+                            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                            responseObj.errorsObject = err;
+                            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                            res.send(responseObj);
+                        });
+                    }else{
+                        responseObj.statusErrorCode = Constant.CODE_STATUS.CATEGORY.CATEGORY_UPDATE_USER_IS_DENIED;
+                        responseObj.errorsObject = message.CATEGORY.CATEGORY_UPDATE_USER_IS_DENIED;
+                        responseObj.errorsMessage = message.CATEGORY.CATEGORY_UPDATE_USER_IS_DENIED.message;
                         res.send(responseObj);
-                        var folderImagesPath = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + result.insertId;
-                        fileService.createFolderIfNotExits(folderImagesPath);
-                    },function(err){
-                        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
-                        responseObj.errorsObject = err;
-                        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
-                        res.send(responseObj);
-                    });
-                }else{
-                    responseObj.statusErrorCode = Constant.CODE_STATUS.CATEGORY.CATEGORY_UPDATE_USER_IS_DENIED;
-                    responseObj.errorsObject = message.CATEGORY.CATEGORY_UPDATE_USER_IS_DENIED;
-                    responseObj.errorsMessage = message.CATEGORY.CATEGORY_UPDATE_USER_IS_DENIED.message;
+                    }
+                }, function(err){
+                    responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                    responseObj.errorsObject = err;
+                    responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
                     res.send(responseObj);
-                }
-            }, function(err){
-                responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
-                responseObj.errorsObject = err;
-                responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                });
+            }else{
+                responseObj.statusErrorCode = Constant.CODE_STATUS.PRODUCT.CREATE_PRODUCT_CODE_EXIST;
+                responseObj.errorsObject = message.PRODUCT.CREATE_PRODUCT_CODE_EXIST;
+                responseObj.errorsMessage = message.PRODUCT.CREATE_PRODUCT_CODE_EXIST.message;
                 res.send(responseObj);
-            });
-        }else{
-            responseObj.statusErrorCode = Constant.CODE_STATUS.PRODUCT.CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST;
-            responseObj.errorsObject = message.PRODUCT.CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST;
-            responseObj.errorsMessage = message.PRODUCT.CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST.message;
+            }
+        }, function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
             res.send(responseObj);
-        }
-    }, function(err){
-        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
-        responseObj.errorsObject = err;
-        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
-        res.send(responseObj);
-    });
+        });
+    }else{
+        categoryDao.checkPermissionUserAndCategory(userID, categoryID).then(function(data){
+            if(data.length > 0){
+                productDao.addNew(product).then(function(result){
+                    responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+                    responseObj.results = result;
+                    res.send(responseObj);
+                    var folderImagesPath = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + result.insertId;
+                    fileService.createFolderIfNotExits(folderImagesPath);
+                },function(err){
+                    responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+                    responseObj.errorsObject = err;
+                    responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+                    res.send(responseObj);
+                });
+            }else{
+                responseObj.statusErrorCode = Constant.CODE_STATUS.CATEGORY.CATEGORY_UPDATE_USER_IS_DENIED;
+                responseObj.errorsObject = message.CATEGORY.CATEGORY_UPDATE_USER_IS_DENIED;
+                responseObj.errorsMessage = message.CATEGORY.CATEGORY_UPDATE_USER_IS_DENIED.message;
+                res.send(responseObj);
+            }
+        }, function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+    }
+
+
 };
 
 /*
@@ -319,6 +358,9 @@ var updateProduct = function(req, res) {
     var productID = isNaN(req.body.productID)? 0 : parseInt(req.body.productID);
     var categoryID = res.categoryID;
 
+    var sellCategoryParentID = req.body.sellCategoryParentID ? req.body.sellCategoryParentID : 0;
+    var sellCategoryChildID = req.body.sellCategoryChildID ? req.body.sellCategoryChildID : 0;
+
     if(checkValidateUtil.isEmptyFeild(productName)){
         responseObj.statusErrorCode = Constant.CODE_STATUS.PRODUCT.CREATE_PRODUCT_EMPTY_FIELD;
         responseObj.errorsObject = message.PRODUCT.CREATE_PRODUCT_EMPTY_FIELD;
@@ -327,9 +369,10 @@ var updateProduct = function(req, res) {
         return;
     }
 
-    var oldProductName = res.productName;
+    //var oldProductName = res.productName;
+    var productCodeOld = res.productCode;
 
-    if(oldProductName == productName){
+    if(productCodeOld == productCode){
         var product = new ProductUpdateDto();
 
         product.count = count;
@@ -342,6 +385,8 @@ var updateProduct = function(req, res) {
         product.productName = productName;
         product.salePrice = salePrice;
         product.productProperties = productProperties;
+        product.sellCategoryChildID = sellCategoryChildID;
+        product.sellCategoryParentID = sellCategoryParentID;
 
         productDao.update(product, Constant.TABLE_NAME_DB.SHOP_PRODUCT.NAME_FIELD_ID, productID).then(function(result){
             responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
@@ -355,7 +400,7 @@ var updateProduct = function(req, res) {
             res.send(responseObj);
         });
     }else{
-        productDao.checkProductNameOfCategoryExist(categoryID, productName).then(function(data){
+        productDao.checkProductCodeExist(productCode).then(function(data){
             if(data.length == 0){
                 var product = new ProductUpdateDto();
 
@@ -369,6 +414,8 @@ var updateProduct = function(req, res) {
                 product.productName = productName;
                 product.salePrice = salePrice;
                 product.productProperties = productProperties;
+                product.sellCategoryChildID = sellCategoryChildID;
+                product.sellCategoryParentID = sellCategoryParentID;
 
                 productDao.update(product, Constant.TABLE_NAME_DB.SHOP_PRODUCT.NAME_FIELD_ID, productID).then(function(result){
                     responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
@@ -382,9 +429,9 @@ var updateProduct = function(req, res) {
                     res.send(responseObj);
                 });
             }else{
-                responseObj.statusErrorCode = Constant.CODE_STATUS.PRODUCT.CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST;
-                responseObj.errorsObject = message.PRODUCT.CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST;
-                responseObj.errorsMessage = message.PRODUCT.CREATE_PRODUCT_NAME_OF_CATEGORY_EXIST.message;
+                responseObj.statusErrorCode = Constant.CODE_STATUS.PRODUCT.CREATE_PRODUCT_CODE_EXIST;
+                responseObj.errorsObject = message.PRODUCT.CREATE_PRODUCT_CODE_EXIST;
+                responseObj.errorsMessage = message.PRODUCT.CREATE_PRODUCT_CODE_EXIST.message;
                 res.send(responseObj);
             }
         }, function(err){
@@ -572,7 +619,7 @@ var search = function(req, res){
     var countStr = "SELECT COUNT(*) as totalItems ";
     var sql_search = " FROM Shop_Product sp INNER JOIN Shop_Categories sc ON sp.categoryID = sc.categoryID " +
                     "INNER JOIN Shop s ON sc.shopID = s.shopID " +
-                    "WHERE sc.isActive = 1 AND sp.isActive = 1 AND s.isActive = 1";
+                    "WHERE sc.isActive = 1 AND sp.isActive = 1 AND s.isActive = 1 AND s.isClosesShop = 0 AND sp.isShow = 1";
 
     if(searchName.trim().length > 0){
         var searchNameArray = searchName.split(" ");

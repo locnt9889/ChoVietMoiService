@@ -17,6 +17,8 @@ function Product(){
     this.productProperties = "";
     this.isActive = 1;
     this.readCount = 0;
+    this.sellCategoryParentID = 0;
+    this.sellCategoryChildID = 0;
     this.createdDate = new Date();
     this.modifiedDate = new Date();
 };

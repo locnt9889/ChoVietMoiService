@@ -186,6 +186,10 @@ var PRODUCT = {
     PRODUCT_INVALID_IMAGE : {
         code: 1704,
         message: "Product image is invalid"
+    },
+    CREATE_PRODUCT_CODE_EXIST : {
+        code: 1705,
+        message: "Product code was existed"
     }
 }
 

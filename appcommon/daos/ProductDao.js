@@ -15,6 +15,12 @@ productDao.checkProductNameOfCategoryExist = function(categoryID, name){
     return productDao.queryExecute(sql, params);
 };
 
+productDao.checkProductCodeExist = function(productCode){
+    var sql = SqlQueryConstant.PRODUCT_SQL_SCRIPT.CHECK_PRODUCT_CODE_EXIST;
+    var params = [productCode];
+    return productDao.queryExecute(sql, params);
+};
+
 productDao.increaseReadCount = function(productID){
     var sql = SqlQueryConstant.PRODUCT_SQL_SCRIPT.INCREASE_READ_COUNT;
     var params = [productID];
