@@ -70,6 +70,8 @@ function viewProductImageFile(req, res) {
 function viewImageAvatarProduct (req, res){
     var productID = req.query.productID ? req.query.productID : 0;
 
+
+
     productImageDao.getAllImageByProduct(productID).then(function(data){
         if(data.length == 0){
             res.writeHead(404);
@@ -77,10 +79,10 @@ function viewImageAvatarProduct (req, res){
         }else{
             var file = data[0].imageURLFull;
             var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + "/" + file;
-            res.send(path.resolve(fullFile));
-            return;
+            //var fullFile = "/Users/ChungTV/WebstormProjects/ChoVietMoiService/app.js";
+
             fs.stat(fullFile, function(err){
-                res.send(err);
+
                 if(!err){
                     res.sendFile(path.resolve(fullFile));
                 }else{
