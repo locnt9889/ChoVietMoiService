@@ -83,7 +83,7 @@ function viewImageAvatarProduct (req, res){
                 res.send(err);
                 return;
                 if(!err){
-                    res.sendFile(fullFile);
+                    res.sendFile(path.resolve(fullFile));
                 }else{
                     res.writeHead(404);
                     res.end();
