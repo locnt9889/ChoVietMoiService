@@ -77,13 +77,13 @@ function viewImageAvatarProduct (req, res){
         }else{
             var file = data[0].imageURLFull;
             var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + "/" + file;
-            res.sendFile(path.resolve(fullFile));
+            //res.sendFile(path.resolve(fullFile));
 
             fs.stat(fullFile, function(err){
                 res.send(err);
                 return;
                 if(!err){
-                    res.sendFile(path.resolve(fullFile));
+                    res.sendFile(fullFile);
                 }else{
                     res.writeHead(404);
                     res.end();
