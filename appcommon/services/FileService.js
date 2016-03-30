@@ -76,7 +76,7 @@ function viewImageAvatarProduct (req, res){
             res.end("ko co");
         }else{
             var file = data[0].imageURLFull;
-            var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + "/" + file;
+            var fullFile = "./" + Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + "/" + file;
             fs.stat(fullFile, function(err){
                 res.send(err);
                 return;
