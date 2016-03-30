@@ -42,8 +42,8 @@ function uploadFile(req, res) {
 function viewFile(req, res, preFolder) {
     var file = req.params.file;
     var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + preFolder + file;
-    fs.exists(fullFile, function(result){
-        if(result){
+    fs.open(fullFile, 'r+', function(err){
+        if(!err){
             res.sendfile(path.resolve(fullFile));
         }else{
             res.writeHead(404);
@@ -57,8 +57,8 @@ function viewProductImageFile(req, res) {
     var productID = req.query.productID ? req.query.productID : 0;
 
     var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + "/" + file;
-    fs.exists(fullFile, function(result){
-        if(result){
+    fs.open(fullFile, 'r+', function(err){
+        if(!err){
             res.sendfile(path.resolve(fullFile));
         }else{
             res.writeHead(404);
@@ -77,8 +77,8 @@ function viewImageAvatarProduct (req, res){
         }else{
             var file = data[0].imageURLFull;
             var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + "/" + file;
-            fs.exists(fullFile, function(result){
-                if(result){
+            fs.open(fullFile, 'r+', function(err){
+                if(!err){
                     res.sendfile(path.resolve(fullFile));
                 }else{
                     res.writeHead(404);
@@ -97,8 +97,8 @@ function viewCommentImageFile(req, res) {
     var productID = req.query.productID ? req.query.productID : 0;
 
     var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.SUB_COMMENT_IMAGE + file;
-    fs.exists(fullFile, function(result){
-        if(result){
+    fs.open(fullFile, 'r+', function(err){
+        if(!err){
             res.sendfile(path.resolve(fullFile));
         }else{
             res.writeHead(404);
@@ -108,8 +108,8 @@ function viewCommentImageFile(req, res) {
 }
 
 function createFolderIfNotExits(folder_path){
-    fs.exists(folder_path, function(result){
-        if(!result){
+    fs.open(folder_path, 'r+', function(err){
+        if(!err){
             mkdirp(path.resolve(folder_path), function (err) {
                 if (err) {
                     console.error("Create folder " + folder_path + " error : " + err);
