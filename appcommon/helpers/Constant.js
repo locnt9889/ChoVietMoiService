@@ -96,7 +96,7 @@ var UPLOAD_FILE_CONFIG = {
         CATEGORY_COVER : 5242880,//5Mb
         PRODUCT_IMAGE : 5242880
     },
-    UPLOAD_FOLDER : PRE_PATH_SYSTEM_DEV + "uploads",
+    UPLOAD_FOLDER : "uploads",
     PRE_FOLDER_IMAGE : {
         IMAGE : "/Images/Demo/",
         USER_AVATAR : "/Images/User/Avatars/",
