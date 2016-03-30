@@ -83,9 +83,6 @@ var TABLE_NAME_DB = {
     USER_ACCESS_TOKEN : "User_Access_Token"
 }
 
-var PRE_PATH_SYSTEM_PRO = "/home/develop/deploys/ChoVietMoiService/";
-var PRE_PATH_SYSTEM_DEV = "/home/develop/deploys/ChomoiTest/ChoVietMoiService/";
-
 var UPLOAD_FILE_CONFIG = {
     MAX_SIZE_IMAGE : {
         IMAGE : 3145728,//3Mb
@@ -96,7 +93,7 @@ var UPLOAD_FILE_CONFIG = {
         CATEGORY_COVER : 5242880,//5Mb
         PRODUCT_IMAGE : 5242880
     },
-    UPLOAD_FOLDER : "uploads",
+    UPLOAD_FOLDER : "/home/develop/deploys/ChomoiTest/ChoVietMoiService/uploads",
     PRE_FOLDER_IMAGE : {
         IMAGE : "/Images/Demo/",
         USER_AVATAR : "/Images/User/Avatars/",
