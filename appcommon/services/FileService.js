@@ -44,7 +44,7 @@ function viewFile(req, res, preFolder) {
     var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + preFolder + file;
     fs.stat(fullFile, function(err){
         if(!err){
-            res.sendfile(path.resolve(fullFile));
+            res.sendFile(path.resolve(fullFile));
         }else{
             res.writeHead(404);
             res.end();
@@ -59,7 +59,7 @@ function viewProductImageFile(req, res) {
     var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + "/" + file;
     fs.stat(fullFile, function(err){
         if(!err){
-            res.sendfile(path.resolve(fullFile));
+            res.sendFile(path.resolve(fullFile));
         }else{
             res.writeHead(404);
             res.end();
@@ -79,7 +79,7 @@ function viewImageAvatarProduct (req, res){
             var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + "/" + file;
             fs.stat(fullFile, function(err){
                 if(!err){
-                    res.sendfile(path.resolve(fullFile));
+                    res.sendFile(path.resolve(fullFile));
                 }else{
                     res.writeHead(404);
                     res.end();
@@ -99,7 +99,7 @@ function viewCommentImageFile(req, res) {
     var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.SUB_COMMENT_IMAGE + file;
     fs.stat(fullFile, function(err){
         if(!err){
-            res.sendfile(path.resolve(fullFile));
+            res.sendFile(path.resolve(fullFile));
         }else{
             res.writeHead(404);
             res.end();
