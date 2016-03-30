@@ -73,15 +73,12 @@ function viewImageAvatarProduct (req, res){
     productImageDao.getAllImageByProduct(productID).then(function(data){
         if(data.length == 0){
             res.writeHead(404);
-            res.end("ko co");
+            res.end();
         }else{
             var file = data[0].imageURLFull;
             var fullFile = Constant.UPLOAD_FILE_CONFIG.UPLOAD_FOLDER + Constant.UPLOAD_FILE_CONFIG.PRE_FOLDER_IMAGE.PRODUCT_IMAGE + productID + "/" + file;
-            //res.sendFile(path.resolve(fullFile));
-
             fs.stat(fullFile, function(err){
                 res.send(err);
-                return;
                 if(!err){
                     res.sendFile(path.resolve(fullFile));
                 }else{
