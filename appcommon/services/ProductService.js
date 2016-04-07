@@ -597,6 +597,7 @@ var search = function(req, res){
     var accessTokenObj = req.accessTokenObj;
     var userID = accessTokenObj.userID;
 
+    var shopID = isNaN(req.body.shopID) ? 0 : parseInt(req.body.shopID);
     var provinceID = isNaN(req.body.provinceID) ? 0 : parseInt(req.body.provinceID);
     var districtID = isNaN(req.body.districtID) ? 0 : parseInt(req.body.districtID);
     var shopTypeParent = isNaN(req.body.shopTypeParent) ? 0 : parseInt(req.body.shopTypeParent);
@@ -626,6 +627,10 @@ var search = function(req, res){
         for(var i = 0; i < searchNameArray.length; i++){
             sql_search = sql_search + " AND sp.productName LIKE '%" + searchNameArray[i] + "%'"
         }
+    }
+
+    if(shopID > 0){
+        sql_search = sql_search + " AND sp.shopID = " + shopID;
     }
 
     if(districtID > 0){
