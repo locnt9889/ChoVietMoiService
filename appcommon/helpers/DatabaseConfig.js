@@ -10,7 +10,7 @@ var DB_CONFIG = {
     host : 'localhost',
     user : 'root',
     password : 'Chomoi2015',
-    database : 'chomoidb',
+    database : 'chomoidb_dev',
     debug    :  false
 };
 
@@ -20,7 +20,7 @@ var DB_CONFIG = {
 //    connectionLimit : 100, //important
 //    host     : '6recipes.com',
 //    user     : '6recipe',
-//    password : 'gg84YU88nmx',
+//    password : '6recipe',
 //    database : '6recipe',
 //    debug    :  false
 //}

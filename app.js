@@ -85,6 +85,10 @@ app.use('/api/user-favorite', userFavoriteCtrl);
 var productCommentCtrl = require("./appcommon/controllers/ProductCommentCtrl");
 app.use('/api/product-comment', productCommentCtrl);
 
+//comment notification controller for api
+var commentProductNotificationCtrl = require("./appcommon/controllers/CommentProductNotificationCtrl");
+app.use('/api/comment-product-notification', commentProductNotificationCtrl);
+
 /*
  * END set config mapping url
  */

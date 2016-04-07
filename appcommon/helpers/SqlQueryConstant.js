@@ -85,6 +85,7 @@ var PRODUCT_SQL_SCRIPT = {
     COUNT_GET_IMAGE_BY_PRODUCT : "SELECT COUNT(id) as totalItems FROM Shop_Product_Images WHERE productID = ? AND isActive= 1",
     GET_ALL_IMAGE_BY_PRODUCT : "SELECT * FROM Shop_Product_Images WHERE productID = ? AND isActive= 1",
     INCREASE_READ_COUNT : "UPDATE Shop_Product SET readCount = readCount + 1 WHERE productID = ?",
+    GET_SHOP_INFO_BY_PRODUCT : "SELECT ss.*  FROM Shop_Product sp INNER JOIN Shop_Categories sc ON sp.categoryID = sc.categoryID INNER JOIN Shop ss ON sc.shopID = ss.shopID WHERE sp.productID=?",
     CHECK_PERMISSION_USER_AND_PRODUCT : "SELECT * FROM Shop_Categories sc INNER JOIN Shop sh ON sc.shopID = sh.shopID INNER JOIN Shop_Product sp ON sp.categoryID = sc.categoryID WHERE sh.userID = ? and sp.productID = ?"
 }
 
@@ -99,7 +100,11 @@ var COMMENT_SQL_SCRIPT = {
     GET_COMMENT_BY_PRODUCT : "SELECT spc.*, u.fullName, u.avatarImageURL FROM Shop_Product_Comments spc INNER JOIN User u ON spc.userID = u.userID WHERE spc.productID = ? AND spc.isActive = 1 ORDER BY spc.commentID DESC LIMIT ?, ?",
 
     COUNT_GET_COMMENT_BY_PARENT : "SELECT COUNT(commentID) AS totalItems FROM Shop_Product_Comments WHERE parent_CommentID = ? AND isActive = 1",
-    GET_COMMENT_BY_PARENT : "SELECT spc.*, u.fullName, u.avatarImageURL FROM Shop_Product_Comments spc INNER JOIN User u ON spc.userID = u.userID WHERE spc.parent_CommentID = ? AND spc.isActive = 1 ORDER BY spc.commentID DESC LIMIT ?, ?"
+    GET_COMMENT_BY_PARENT : "SELECT spc.*, u.fullName, u.avatarImageURL FROM Shop_Product_Comments spc INNER JOIN User u ON spc.userID = u.userID WHERE spc.parent_CommentID = ? AND spc.isActive = 1 ORDER BY spc.commentID DESC LIMIT ?, ?",
+    GET_USER_COMMENT_BY_PARENT : "SELECT userID FROM Shop_Product_Comments WHERE parent_CommentID = ? AND isActive = 1",
+    COUNT_NOTIFICATION_UNREAD : "SELECT count(id) as totalUnread FROM CommentProductNotification WHERE isRead = 0 AND toUserID = ?",
+    SHOP_GET_NOTIFICATION : "SELECT * FROM CommentProductNotification cpn INNER JOIN Shop_Product_Comments spc ON cpn.commentID = spc.commentID WHERE cpn.shopID=? ORDER BY cpn.id DESC LIMIT ?, ?",
+    COUNT_SHOP_GET_NOTIFICATION : "SELECT COUNT(cpn.id) as totalItems FROM CommentProductNotification cpn INNER JOIN Shop_Product_Comments spc ON cpn.commentID = spc.commentID WHERE cpn.shopID=?"
 }
 
 /*Exports*/

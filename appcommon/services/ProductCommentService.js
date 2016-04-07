@@ -10,9 +10,11 @@ var UploadResponseDTO = require("../modelsDto/UploadResponseDTO");
 
 var productDao = require("../daos/ProductDao");
 var productCommentDao = require("../daos/ProductCommentDao");
+var commentProductNotificationDao = require("../daos/CommentProductNotificationDao");
 
 var ResponseServerDto = require("../modelsDto/ResponseServerDto");
 var ProductComment = require("../models/ProductComment");
+var CommentProductNotification = require("../models/CommentProductNotification");
 
 var Constant = require("../helpers/Constant");
 var message = require("../message/en");
@@ -29,11 +31,65 @@ var addNewProductComment = function(req, res, responseObj,  productComment){
         responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
         responseObj.results = productComment;
         res.send(responseObj);
+
+        createCommentProductNotification(productComment);
     }, function(err){
         responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
         responseObj.errorsObject = err;
         responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
         res.send(responseObj);
+    });
+};
+
+var createCommentProductNotification = function(productComment){
+    var commentProductNotification = new CommentProductNotification();
+    commentProductNotification.productID = productComment.productID;
+    commentProductNotification.fromUserID = productComment.userID;
+    commentProductNotification.commentID = productComment.commentID;
+
+    var addCommentProductNotification = function (commentProductNotification){
+        if(commentProductNotification.toUserID != commentProductNotification.fromUserID){
+            commentProductNotificationDao.addNew(commentProductNotification).then(function(result){
+                console.log("addCommentProductNotification success");
+            }, function(err){
+                console.log("addCommentProductNotification error")
+            });
+        }
+    }
+
+    commentProductNotificationDao.getShopInfoByProduct(productComment.productID).then(function(data){
+        if(data.length > 0){
+            commentProductNotification.shopID = data[0].shopID;
+
+            productCommentDao.getUserCommentByParent(productComment.parent_CommentID).then(function(dataUser){
+                if(productComment.isShopComment){
+                    for(var i = 0; i < dataUser.length; i++){
+                        if(dataUser[i].userID != productComment.userID){
+                            commentProductNotification.toUserID = dataUser[0].userID;
+                            addCommentProductNotification(commentProductNotification);
+                        }
+                    }
+                }else {
+                    if(productComment.parent_CommentID == 0){
+                        commentProductNotification.toUserID = data[0].userID;
+                        addCommentProductNotification(commentProductNotification);
+                    }else{
+                        for(var i = 0; i < dataUser.length; i++){
+                            if(dataUser[i].userID != productComment.userID){
+                                commentProductNotification.toUserID = dataUser[0].userID;
+                                addCommentProductNotification(commentProductNotification);
+                            }
+                        }
+                    }
+                }
+            }, function(error){
+                console.log("productCommentDao.getUserCommentByParent : " + message.DB_EXECUTE_ERROR.message);
+            })
+
+        }
+
+    },function(err){
+        console.log("commentProductNotificationDao.getShopInfoByProduct : " + message.DB_EXECUTE_ERROR.message);
     });
 };
 

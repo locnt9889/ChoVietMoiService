@@ -75,6 +75,11 @@ var TABLE_NAME_DB = {
         NAME : "Shop_Product_Comments",
         NAME_FIELD_ID : "commentID"
     },
+    SHOP_COMMENT_PRODUCT_NOTIFICATION : {
+        NAME : "CommentProductNotification",
+        NAME_FIELD_ID : "id",
+        NAME_FIELD_IS_READ : "isRead"
+    },
     USER_FAVORITE_ITEMS : {
         NAME : "User_Favorite_Items",
         NAME_FIELD_ID : "id"

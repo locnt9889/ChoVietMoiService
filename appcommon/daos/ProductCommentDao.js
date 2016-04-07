@@ -81,5 +81,19 @@ productCommentDao.getCommentByParent = function(parentID, pageNum, perPage){
     return def.promise;
 };
 
+productCommentDao.getUserCommentByParent = function(parentID){
+    var def = Q.defer();
+
+    var sql = SqlQueryConstant.COMMENT_SQL_SCRIPT.GET_USER_COMMENT_BY_PARENT;
+    var param = [parentID];
+    productCommentDao.queryExecute(sql, param).then(function(data){
+        def.resolve(data);
+    }, function(err){
+        def.reject(err);
+    });
+
+    return def.promise;
+};
+
 /*Export*/
 module.exports = productCommentDao;
