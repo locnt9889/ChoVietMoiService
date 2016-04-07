@@ -77,11 +77,33 @@ var getNotificatiOfShop = function(req, res){
     });
 };
 
+var getNotificatiOfUser = function(req, res){
+    var responseObj = new ResponseServerDto();
+
+    var accessTokenObj = req.accessTokenObj;
+    var userID = accessTokenObj.userID;
+
+    var pageNum = isNaN(req.body.pageNum) || !req.body.pageNum ? 1 : parseInt(req.body.pageNum);
+    var perPage = isNaN(req.body.perPage) || !req.body.perPage? 10 : parseInt(req.body.perPage);
+
+    commentProductNotificationDao.getNotificationOfUser(userID, pageNum, perPage).then(function(data){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+        responseObj.results = data;
+        res.send(responseObj);
+    }, function(err){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+        responseObj.errorsObject = err;
+        responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+        res.send(responseObj);
+    });
+};
+
 /*Exports*/
 module.exports = {
     countNotification : countNotification,
     setNotificationIsRead : setNotificationIsRead,
-    getNotificatiOfShop : getNotificatiOfShop
+    getNotificatiOfShop : getNotificatiOfShop,
+    getNotificatiOfUser : getNotificatiOfUser
 }
 
 

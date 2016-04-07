@@ -13,12 +13,17 @@ router.post('/count-notification', [accessTokenService.checkAccessToken, functio
     commentProductNorificationService.countNotification(req, res);
 }]);
 
+/* POST get notifi of user */
+router.post('/get-notification-user', [accessTokenService.checkAccessToken, function(req, res, next) {
+    commentProductNorificationService.getNotificatiOfUser(req, res);
+}]);
+
 /* POST get notifi of shop */
 router.post('/get-notification-shop', [accessTokenService.checkAccessToken, function(req, res, next) {
     commentProductNorificationService.getNotificatiOfShop(req, res);
 }]);
 
-/* POST get notifi of shop */
+/* POST make read notifi */
 router.post('/make-read', [accessTokenService.checkAccessToken, function(req, res, next) {
     commentProductNorificationService.setNotificationIsRead(req, res);
 }]);

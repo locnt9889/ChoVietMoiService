@@ -104,7 +104,9 @@ var COMMENT_SQL_SCRIPT = {
     GET_USER_COMMENT_BY_PARENT : "SELECT userID FROM Shop_Product_Comments WHERE parent_CommentID = ? AND isActive = 1",
     COUNT_NOTIFICATION_UNREAD : "SELECT count(id) as totalUnread FROM CommentProductNotification WHERE isRead = 0 AND toUserID = ?",
     SHOP_GET_NOTIFICATION : "SELECT * FROM CommentProductNotification cpn INNER JOIN Shop_Product_Comments spc ON cpn.commentID = spc.commentID WHERE cpn.shopID=? ORDER BY cpn.id DESC LIMIT ?, ?",
-    COUNT_SHOP_GET_NOTIFICATION : "SELECT COUNT(cpn.id) as totalItems FROM CommentProductNotification cpn INNER JOIN Shop_Product_Comments spc ON cpn.commentID = spc.commentID WHERE cpn.shopID=?"
+    COUNT_SHOP_GET_NOTIFICATION : "SELECT COUNT(cpn.id) as totalItems FROM CommentProductNotification cpn INNER JOIN Shop_Product_Comments spc ON cpn.commentID = spc.commentID WHERE cpn.shopID=?",
+    USER_GET_NOTIFICATION : "SELECT * FROM CommentProductNotification cpn INNER JOIN Shop_Product_Comments spc ON cpn.commentID = spc.commentID WHERE cpn.toUserID=? ORDER BY cpn.id DESC LIMIT ?, ?",
+    COUNT_USER_GET_NOTIFICATION : "SELECT COUNT(cpn.id) as totalItems FROM CommentProductNotification cpn INNER JOIN Shop_Product_Comments spc ON cpn.commentID = spc.commentID WHERE cpn.toUserID=?"
 }
 
 /*Exports*/
