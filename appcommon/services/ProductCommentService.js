@@ -65,7 +65,7 @@ var createCommentProductNotification = function(productComment){
                 if(productComment.isShopComment){
                     for(var i = 0; i < dataUser.length; i++){
                         if(dataUser[i].userID != productComment.userID){
-                            commentProductNotification.toUserID = dataUser[0].userID;
+                            commentProductNotification.toUserID = dataUser[i].userID;
                             addCommentProductNotification(commentProductNotification);
                         }
                     }
