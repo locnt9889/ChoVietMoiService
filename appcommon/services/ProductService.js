@@ -630,7 +630,7 @@ var search = function(req, res){
     }
 
     if(shopID > 0){
-        sql_search = sql_search + " AND sp.shopID = " + shopID;
+        sql_search = sql_search + " AND s.shopID = " + shopID;
     }
 
     if(districtID > 0){
