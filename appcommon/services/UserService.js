@@ -479,6 +479,36 @@ var getUserProfile = function(req, res){
     }
 };
 
+var getOtherProfile = function(req, res){
+    var responseObj = new ResponseServerDto();
+    var accessTokenObj = req.accessTokenObj;
+
+    var id = isNaN(req.body.id)? 0 : parseInt(req.body.id);
+
+    if(!accessTokenObj){
+        responseObj.statusErrorCode = Constant.CODE_STATUS.ACCESS_TOKEN_INVALID;
+        responseObj.errorsObject = message.ACCESS_TOKEN_INVALID;
+        responseObj.errorsMessage = message.ACCESS_TOKEN_INVALID.message;
+        res.send(responseObj);
+    }else{
+
+        //var userID = accessTokenObj.userID;
+        userDao.getUserProfileById(id).then(function(data){
+            if(data.length > 0){
+                data[0].passWord = "******";
+            }
+            responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
+            responseObj.results = data;
+            res.send(responseObj);
+        }, function(err){
+            responseObj.statusErrorCode = Constant.CODE_STATUS.DB_EXECUTE_ERROR;
+            responseObj.errorsObject = err;
+            responseObj.errorsMessage = message.DB_EXECUTE_ERROR.message;
+            res.send(responseObj);
+        });
+    }
+};
+
 var updateUserProfile = function(req, res){
     var responseObj = new ResponseServerDto();
 
@@ -680,5 +710,6 @@ module.exports = {
     updateUserProfile : updateUserProfile,
     updateAvatar : updateAvatar,
     updateCover : updateCover,
-    searchUser : searchUser
+    searchUser : searchUser,
+    getOtherProfile : getOtherProfile
 }

@@ -38,6 +38,11 @@ router.post('/getUserProfile', [accessTokenService.checkAccessToken, function(re
     userService.getUserProfile(req, res);
 }]);
 
+/* POST get other user profile */
+router.post('/getOtherProfile', [accessTokenService.checkAccessToken, function(req, res, next) {
+    userService.getOtherProfile(req, res);
+}]);
+
 /* POST update user profile */
 router.post('/updateUserProfile', [accessTokenService.checkAccessToken, function(req, res, next) {
     userService.updateUserProfile(req, res);

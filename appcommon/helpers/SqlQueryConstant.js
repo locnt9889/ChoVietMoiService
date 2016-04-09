@@ -30,7 +30,7 @@ var USER_SQL_SCRIPT = {
     SLQ_REMOVE_ALL_OTHER_BY_USER : "DELETE FROM User_Access_Token WHERE accessTokenValue != ? AND userID = ?",
     SQL_CHECK_ACCESS_TOKEN : "SELECT udt.id, udt.accessTokenValue, u.* FROM User u INNER JOIN User_Access_Token udt ON u.userID = udt.userID WHERE udt.accessTokenValue = ?",
 
-    SQL_GET_USER_PROFILE : "SELECT u.*,ust.statusValue FROM User u INNER JOIN User_Status ust ON u.userStatusID = ust.userStatusID WHERE u.userID = ?",
+    SQL_GET_USER_PROFILE : "SELECT u.*,ust.statusValue FROM User u LEFT JOIN User_Status ust ON u.userStatusID = ust.userStatusID WHERE u.userID = ?",
     
     SQL_SEARCH_USER : "SELECT us.userID, us.email, us.iShowEmail, us.fullName, us.dateOfBirth, us.gender, us.phoneNumber, us.isShowPhoneNumber, us.avatarImageURL, us.coverImageURL, us.isFacebookAccount, IFNULL(ucf.friendStatusID, 0) as friendStatusID, IFNULL(ucf.friendStatusValue, '') as friendStatusValue FROM User us LEFT JOIN (SELECT uc.friendID, ucs.statusID friendStatusID, ucs.statusValue as friendStatusValue FROM User_Contacts uc INNER JOIN User_Contact_Status ucs ON uc.statusID = ucs.statusID INNER JOIN User u ON u.userID = uc.friendID WHERE uc.userID = ?) ucf ON us.userID = ucf.friendID WHERE isActive=1 AND us.userID != ? AND ( fullName LIKE ? OR email LIKE ? ) LIMIT ?, ?",
     SQL_COUNT_NUMBER_SEARCH_USER : "SELECT COUNT(userID) as totalItems FROM User WHERE userID != ? AND (fullName LIKE ? OR email LIKE ?)"
