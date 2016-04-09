@@ -42,14 +42,17 @@ var addNewProductComment = function(req, res, responseObj,  productComment){
 };
 
 var createCommentProductNotification = function(productComment){
-    var commentProductNotification = new CommentProductNotification();
-    commentProductNotification.productID = productComment.productID;
-    commentProductNotification.fromUserID = productComment.userID;
-    commentProductNotification.commentID = productComment.commentID;
 
-    var addCommentProductNotification = function (notification){
-        if(notification.toUserID != notification.fromUserID){
-            commentProductNotificationDao.addNew(notification).then(function(result){
+    var addCommentProductNotification = function (shopID, toUserID){
+        var commentProductNotification = new CommentProductNotification();
+        commentProductNotification.productID = productComment.productID;
+        commentProductNotification.fromUserID = productComment.userID;
+        commentProductNotification.commentID = productComment.commentID;
+        commentProductNotification.shopID = shopID;
+        commentProductNotification.toUserID = toUserID;
+
+        if(commentProductNotification.toUserID != commentProductNotification.fromUserID){
+            commentProductNotificationDao.addNew(commentProductNotification).then(function(result){
                 console.log("addCommentProductNotification success");
             }, function(err){
                 console.log("addCommentProductNotification error")
@@ -59,25 +62,22 @@ var createCommentProductNotification = function(productComment){
 
     commentProductNotificationDao.getShopInfoByProduct(productComment.productID).then(function(data){
         if(data.length > 0){
-            commentProductNotification.shopID = data[0].shopID;
+            //commentProductNotification.shopID = data[0].shopID;
 
             productCommentDao.getUserCommentByParent(productComment.parent_CommentID).then(function(dataUser){
                 if(productComment.isShopComment){
                     for(var i = 0; i < dataUser.length; i++){
                         if(dataUser[i].userID != productComment.userID){
-                            commentProductNotification.toUserID = dataUser[i].userID;
-                            addCommentProductNotification(commentProductNotification);
+                            addCommentProductNotification(data[0].shopID, dataUser[i].userID);
                         }
                     }
                 }else {
                     if(productComment.parent_CommentID == 0){
-                        commentProductNotification.toUserID = data[0].userID;
-                        addCommentProductNotification(commentProductNotification);
+                        addCommentProductNotification(data[0].shopID, data[0].userID);
                     }else{
                         for(var i = 0; i < dataUser.length; i++){
                             if(dataUser[i].userID != productComment.userID){
-                                commentProductNotification.toUserID = dataUser[0].userID;
-                                addCommentProductNotification(commentProductNotification);
+                                addCommentProductNotification(data[0].shopID, dataUser[i].userID);
                             }
                         }
                     }
