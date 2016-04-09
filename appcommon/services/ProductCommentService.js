@@ -47,9 +47,9 @@ var createCommentProductNotification = function(productComment){
     commentProductNotification.fromUserID = productComment.userID;
     commentProductNotification.commentID = productComment.commentID;
 
-    var addCommentProductNotification = function (commentProductNotification){
-        if(commentProductNotification.toUserID != commentProductNotification.fromUserID){
-            commentProductNotificationDao.addNew(commentProductNotification).then(function(result){
+    var addCommentProductNotification = function (notification){
+        if(notification.toUserID != notification.fromUserID){
+            commentProductNotificationDao.addNew(notification).then(function(result){
                 console.log("addCommentProductNotification success");
             }, function(err){
                 console.log("addCommentProductNotification error")
