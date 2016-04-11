@@ -74,7 +74,7 @@ var createShop = function(req, res){
     var shopTypeIds = req.body.shopTypeIds ? req.body.shopTypeIds : "";
     var districtIds = req.body.districtIds ? req.body.districtIds : "";
 
-    if(checkValidateUtil.isEmptyFeild(name) || checkValidateUtil.isEmptyFeild(shopTypeIds) || checkValidateUtil.isEmptyFeild(districtIds)){
+    if(checkValidateUtil.isEmptyFeild(name) || checkValidateUtil.isEmptyFeild(districtIds)){
         responseObj.statusErrorCode = Constant.CODE_STATUS.SHOP.CREATE_SHOP_EMPTY_FIELD;
         responseObj.errorsObject = message.SHOP.CREATE_SHOP_EMPTY_FIELD;
         responseObj.errorsMessage = message.SHOP.CREATE_SHOP_EMPTY_FIELD.message;
