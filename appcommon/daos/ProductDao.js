@@ -70,6 +70,12 @@ productDao.checkIsShopCommentProduct = function(userID, productID){
     return productDao.queryExecute(sql, params);
 };
 
+productDao.getProductDetail = function(productID){
+    var sql = SqlQueryConstant.PRODUCT_SQL_SCRIPT.GET_PRODUCT_DETAIL;
+    var params = [productID];
+    return productDao.queryExecute(sql, params);
+};
+
 productDao.search = function(sql_search, selectStr, countStr, pageNum, perPage){
     var def = Q.defer();
 

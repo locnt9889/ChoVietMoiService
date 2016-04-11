@@ -238,7 +238,7 @@ var getProductDetail = function(req, res) {
         return;
     }
 
-    productDao.findOneById(Constant.TABLE_NAME_DB.SHOP_PRODUCT.NAME_FIELD_ID, productID).then(function (result) {
+    productDao.getProductDetail(productID).then(function (result) {
         //responseObj.statusErrorCode = Constant.CODE_STATUS.SUCCESS;
         responseObj.results = result;
 
