@@ -10,7 +10,7 @@ var DB_CONFIG = {
     host : 'localhost',
     user : 'root',
     password : 'Chomoi2015',
-    database : 'chomoidb_dev',
+    database : 'chomoidb',
     debug    :  false
 };
 
