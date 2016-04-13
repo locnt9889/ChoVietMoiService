@@ -87,7 +87,16 @@ productCommentDao.getUserCommentByParent = function(parentID){
     var sql = SqlQueryConstant.COMMENT_SQL_SCRIPT.GET_USER_COMMENT_BY_PARENT;
     var param = [parentID];
     productCommentDao.queryExecute(sql, param).then(function(data){
-        def.resolve(data);
+        var sql1 = SqlQueryConstant.COMMENT_SQL_SCRIPT.GET_OWNER_USER_COMMENT_BY_ID;
+        var param1 = [parentID];
+        productCommentDao.queryExecute(sql1, param1).then(function(data1){
+            if(data1.length > 0){
+                data = data.push(data1[0]);
+            }
+            def.resolve(data);
+        }, function(err){
+            def.reject(err);
+        });
     }, function(err){
         def.reject(err);
     });
