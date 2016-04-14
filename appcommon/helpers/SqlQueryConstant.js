@@ -102,7 +102,7 @@ var COMMENT_SQL_SCRIPT = {
 
     COUNT_GET_COMMENT_BY_PARENT : "SELECT COUNT(commentID) AS totalItems FROM Shop_Product_Comments WHERE parent_CommentID = ? AND isActive = 1",
     GET_COMMENT_BY_PARENT : "SELECT spc.*, u.fullName, u.avatarImageURL FROM Shop_Product_Comments spc INNER JOIN User u ON spc.userID = u.userID WHERE spc.parent_CommentID = ? AND spc.isActive = 1 ORDER BY spc.commentID DESC LIMIT ?, ?",
-    GET_USER_COMMENT_BY_PARENT : "SELECT DISTINCT userID FROM Shop_Product_Comments WHERE parent_CommentID = ? AND isActive = 1",
+    GET_USER_COMMENT_BY_PARENT : "SELECT DISTINCT userID FROM Shop_Product_Comments WHERE parent_CommentID = ? AND isActive = 1 AND productID = ?",
     GET_OWNER_USER_COMMENT_BY_ID : "SELECT DISTINCT userID FROM Shop_Product_Comments WHERE commentID = ? AND isActive = 1",
     COUNT_NOTIFICATION_UNREAD : "SELECT count(id) as totalUnread FROM CommentProductNotification WHERE isRead = 0 AND toUserID = ?",
     SHOP_GET_NOTIFICATION : "SELECT * FROM CommentProductNotification cpn INNER JOIN Shop_Product_Comments spc ON cpn.commentID = spc.commentID WHERE cpn.shopID=? ORDER BY cpn.id DESC LIMIT ?, ?",

@@ -64,7 +64,7 @@ var createCommentProductNotification = function(productComment){
         if(data.length > 0){
             //commentProductNotification.shopID = data[0].shopID;
 
-            productCommentDao.getUserCommentByParent(productComment.parent_CommentID).then(function(dataUser){
+            productCommentDao.getUserCommentByParent(productComment.parent_CommentID, productComment.productID).then(function(dataUser){
                 if(productComment.isShopComment){
                     for(var i = 0; i < dataUser.length; i++){
                         if(dataUser[i].userID != productComment.userID){

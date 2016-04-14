@@ -81,11 +81,11 @@ productCommentDao.getCommentByParent = function(parentID, pageNum, perPage){
     return def.promise;
 };
 
-productCommentDao.getUserCommentByParent = function(parentID){
+productCommentDao.getUserCommentByParent = function(parentID, productID){
     var def = Q.defer();
 
     var sql = SqlQueryConstant.COMMENT_SQL_SCRIPT.GET_USER_COMMENT_BY_PARENT;
-    var param = [parentID];
+    var param = [parentID, productID];
     productCommentDao.queryExecute(sql, param).then(function(data){
         var sql1 = SqlQueryConstant.COMMENT_SQL_SCRIPT.GET_OWNER_USER_COMMENT_BY_ID;
         var param1 = [parentID];
